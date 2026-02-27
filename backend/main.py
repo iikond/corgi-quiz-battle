@@ -8,6 +8,10 @@ import string
 import json
 import time
 from gigachat import GigaChat
+from dotenv import load_dotenv
+
+load_dotenv()  # загружает переменные из .env файла
+GIGACHAT_TOKEN = os.getenv("GIGACHAT_TOKEN")
 
 def generate_pin(length=6):
     symbols = string.ascii_uppercase + string.digits
@@ -16,7 +20,6 @@ def generate_pin(length=6):
         if pin not in games:
             return pin
 
-GIGACHAT_TOKEN = "MDE5Y2EwNzgtYzkwYS03ODFhLWE5MjItNTg1MmFlMWM5ZDY3OmE3Zjk3MTA0LThmMmEtNGM4My1iYjc0LTQ1YTMxN2ZjNDliNQ=="
 USE_AI = True  
 
 try:
