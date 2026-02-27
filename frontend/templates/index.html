@@ -6,17 +6,12 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Квиз Баттл</h1>
-    <input id="pin" placeholder="Введи PIN">
-    <button onclick="join()">Присоединиться</button>
-    <button onclick="create()">Создать игру</button>
-    <label id="pin_legit" style="color: red; display: none;">Неверный PIN</label>
-
     <div class="container">
         <div class="card">
           <h2>Я игрок</h2>
           <input id="player_name" placeholder="Введи имя">
-          <input id="player_pin" placeholder="Введи PIN">
+          <input id="pin" placeholder="Введи PIN">
+          <button id="enter_game" onclick="enter_game()">Присоединиться</button>
           <!-- сюда твои input'ы для имени и PIN -->
         </div>
       
@@ -24,10 +19,11 @@
           <h2>Я ведущий</h2>
           <input id="host_theme" placeholder="Введите тему">
           <input id="host_num_questions" placeholder="Введите количество вопросов">
+          <button id="start_game">Создать игру</button>
           <!-- сюда input для темы и select для количества вопросов -->
         </div>
       </div>
-
+      
     <script src="/static/js/script.js"></script>
 </body>
 </html>
