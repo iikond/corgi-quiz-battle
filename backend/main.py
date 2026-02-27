@@ -221,7 +221,7 @@ def handle_create_game(data):
         "ai_generated": len(raw_questions) == q_num and USE_AI  
     }
     
-    print(f"🎮 Игра {pin} создана, {len(questions)} вопросов")
+    print(f"Игра {pin} создана, {len(questions)} вопросов")
     emit('game_created', {"pin": pin, "ai_generated": games[pin]["ai_generated"]}, to=request.sid)
 
 @socketio.on('start_game')

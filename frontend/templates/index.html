@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Квиз Баттл</title>
+    <title>Corgi quiz battle</title>
+    <link rel="icon" type="image/png" href="/static/images/corgi.png">
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+
+  <img src="/static/images/corgi.png" alt="Corgi" class="corgi-image">
+  <style>
+  .corgi-image {
+    position: absolute;   /* вырываем из потока */
+    top: 10px;            /* отступ сверху */
+    left: 10px;           /* отступ слева */
+    width: 250px;
+    height: 250px;
+    z-index: 1000;        /* чтобы быть поверх всего */
+}
+  </style>
+
     <div class="container">
         <div class="card">
           <h2>Я игрок</h2>
