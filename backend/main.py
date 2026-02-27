@@ -16,11 +16,9 @@ def generate_pin(length=6):
         if pin not in games:
             return pin
 
-# Конфигурация GigaChat
 GIGACHAT_TOKEN = "MDE5Y2EwNzgtYzkwYS03ODFhLWE5MjItNTg1MmFlMWM5ZDY3OmE3Zjk3MTA0LThmMmEtNGM4My1iYjc0LTQ1YTMxN2ZjNDliNQ=="
-USE_AI = True  # флаг для отладки
+USE_AI = True  
 
-# Инициализация GigaChat
 try:
     giga = GigaChat(credentials=GIGACHAT_TOKEN, model="GigaChat-2" ,verify_ssl_certs=False)
     print("✅ GigaChat подключён")
@@ -40,7 +38,6 @@ socketio = SocketIO(app)
 
 games = {}
 
-# Запасные вопросы (если AI не работает)
 FALLBACK_QUESTIONS = [
     {
         "text": "Какая технология чаще всего ассоциируется со скоростью и динамикой?",
@@ -65,7 +62,6 @@ def generate_questions_with_ai(theme, num_questions):
         print("AI недоступен, использую запасные вопросы")
         return FALLBACK_QUESTIONS[:num_questions]
     
-    # разные варианты промпта (иногда AI лучше реагирует на краткость)
     prompts = [
         f"""Сгенерируй {num_questions} вопросов для викторины на тему "{theme}". 
         Верни ТОЛЬКО JSON массив без пояснений.
@@ -86,9 +82,7 @@ def generate_questions_with_ai(theme, num_questions):
             response = giga.chat(prompt)
             text = response.choices[0].message.content
             
-            # ========== ЖЁСТКИЙ ПАРСИНГ JSON ==========
-            
-            # Способ 1: пытаемся найти [ ... ]
+
             match = re.search(r'\[\s*{.*}\s*\]', text, re.DOTALL)
             if match:
                 json_str = match.group(0)
@@ -99,12 +93,11 @@ def generate_questions_with_ai(theme, num_questions):
                 except:
                     pass
             
-            # Способ 2: берём всё от [ до ]
             start = text.find('[')
             end = text.rfind(']') + 1
             if start != -1 and end != 0:
                 json_str = text[start:end]
-                # чистим от мусора
+
                 json_str = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', json_str)
                 json_str = re.sub(r',\s*}', '}', json_str)
                 json_str = re.sub(r',\s*]', ']', json_str)
@@ -115,7 +108,7 @@ def generate_questions_with_ai(theme, num_questions):
                 except:
                     pass
             
-            # Способ 3: ищем отдельные объекты { ... }
+
             objects = re.findall(r'\{[^{}]*\}', text)
             if objects:
                 questions = []
@@ -151,7 +144,7 @@ def validate_questions(questions, expected_count):
             0 <= q["correct_index"] < 4):
             valid_questions.append(q)
     
-    # Если валидных вопросов太少, добираем из запасных
+
     while len(valid_questions) < expected_count:
         idx = len(valid_questions) % len(FALLBACK_QUESTIONS)
         valid_questions.append(FALLBACK_QUESTIONS[idx])
@@ -208,7 +201,7 @@ def handle_create_game(data):
     except ValueError:
         q_num = 5
 
-    # Генерируем вопросы через AI (или берём запасные)
+
     raw_questions = generate_questions_with_ai(theme, q_num)
     questions = validate_questions(raw_questions, q_num)
 
@@ -225,7 +218,7 @@ def handle_create_game(data):
         "current_team": "A",
         "current_question_index": 0,
         "questions": questions,
-        "ai_generated": len(raw_questions) == q_num and USE_AI  # флаг для презентации
+        "ai_generated": len(raw_questions) == q_num and USE_AI  
     }
     
     print(f"🎮 Игра {pin} создана, {len(questions)} вопросов")
@@ -289,7 +282,7 @@ def handle_answer(data):
 
     if choice_index == q["correct_index"]:
         game["scores"][team] += 1
-        print(f"✅ Команда {team} ответила правильно! Счёт: A:{game['scores']['A']} B:{game['scores']['B']}")
+        print(f"Команда {team} ответила правильно! Счёт: A:{game['scores']['A']} B:{game['scores']['B']}")
 
     game["current_question_index"] += 1
     game["current_team"] = "B" if game["current_team"] == "A" else "A"
