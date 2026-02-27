@@ -290,25 +290,6 @@ body {
     border-color: var(--red-primary);
 }
 
-.card button:last-of-type {
-    background: var(--red-primary);
-    color: white;
-    border: none;
-    font-weight: 600;
-}
-
-.card button:last-of-type:hover {
-    background: var(--red-light);
-    transform: scale(1.02);
-}
-
-/* чтобы последний вариант ответа не выглядел "выбранным" по умолчанию */
-.answers-grid .answer-btn:last-of-type {
-    background: #1e1e1e;
-    color: var(--text-soft);
-    border: 1px solid #333;
-}
-
 /* Адаптивность */
 @media (max-width: 768px) {
     .container {
